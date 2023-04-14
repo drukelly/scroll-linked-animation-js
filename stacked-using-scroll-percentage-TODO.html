@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buildable Blades - 4 Stacked Elements</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      height: 100vh;
+    }
+    body {
+      font: 100 1em/1 sans-serif;
+      height: 1000vh;
+    }
+    .blade {
+      align-items: center;
+      display: flex;
+      font-size: 5em;
+      height: 100vh;
+      justify-content: center;
+      position: fixed;
+      transition: opacity .5s ease-out,
+                  transform 1s cubic-bezier(.84,.13,.54,.85);
+      width: 100vw;
+      opacity: 1;
+    }
+    .blade:nth-child(odd) {
+      background-color: palegoldenrod;
+    }
+    .blade:nth-child(even) {
+      background-color: paleturquoise;
+    }
+    .swipe-up {
+      transform: translateY(-110%);
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="stacks">
+    <div class="blade">1</div>
+    <div class="blade">2</div>
+    <div class="blade">3</div>
+    <div class="blade">4</div>
+    <div class="blade">5</div>
+  </div>
+  <script>
+    const stacks = document.getElementById("stacks").children;
+    document.body.style.height = `${200*stacks.length}vh`;
+    for (let i = 0; i < stacks.length; i++) {
+      stacks[i].style.zIndex = 100-i;
+    }
+    window.onbeforeunload = () => {
+      window.scrollTo(0, 0);
+    }
+    window.addEventListener('scroll', () => {
+      let scrollPercentage = (document.documentElement.scrollTop + document.body.scrollTop) / (document.documentElement.scrollHeight - document.documentElement.clientHeight) * 100;
+      const waypoints = new Array();
+      for (let i = 0; i < stacks.length; i++) {
+        waypoints.push(Math.round(100/stacks.length)*(i+1));
+        if (scrollPercentage > waypoints[i] && scrollPercentage <= 100) {
+          stacks[i].classList.add('swipe-up')
+        } else {
+          stacks[i].classList.remove('swipe-up');
+        }
+      }
+      // console.table(waypoints);
+      // console.log(Math.ceil(scrollPercentage));
+    });
+    window.addEventListener('resize', () => {
+      let scrollPercentage = (document.documentElement.scrollTop + document.body.scrollTop) / (document.documentElement.scrollHeight - document.documentElement.clientHeight) * 100;
+      const waypoints = new Array();
+      for (let i = 0; i < stacks.length; i++) {
+        waypoints.push(Math.round(100/stacks.length)*(i+1));
+        if (scrollPercentage > waypoints[i] && scrollPercentage <= 100) {
+          stacks[i].classList.add('swipe-up')
+        } else {
+          stacks[i].classList.remove('swipe-up');
+        }
+      }
+      // console.table(waypoints);
+      // console.log(Math.ceil(scrollPercentage));
+    });
+  </script>
+</body>
+</html>

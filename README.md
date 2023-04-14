@@ -1,1 +1,2 @@
-# scroll-linked-animation-js
+# Scroll Linked Animation
+## Description
